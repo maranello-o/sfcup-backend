@@ -6,7 +6,7 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY ./yyzgpt .
+COPY ./sfcup .
 
 # COPY ./static/* ./static/
 
