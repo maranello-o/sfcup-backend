@@ -9,7 +9,7 @@ func SendCode(toEmail, code string) error {
 
 	to := []string{toEmail}
 	auth := smtp.PlainAuth("", "943155756@qq.com", "rinxamuyqopkbdib", "smtp.qq.com")
-	msg := []byte("From: " + "软件杯团队" + "\r\n" +
+	msg := []byte("From: " + "943155756@qq.com" + "\r\n" +
 		"To: " + toEmail + "\r\n" +
 		"Subject: 注册验证码\r\n" +
 		"\r\n" +
