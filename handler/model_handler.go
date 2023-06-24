@@ -17,7 +17,7 @@ func GetPredictResult(c *gin.Context) {
 		return
 	}
 	// 创建转发请求
-	url := "http://external-api.com/upload"
+	url := "http://10.22.232.237:5000/infer/nnunet"
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		response.Send(c, http.StatusBadRequest, err.Error(), "")

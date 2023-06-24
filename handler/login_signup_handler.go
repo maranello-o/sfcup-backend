@@ -21,14 +21,14 @@ type registerDTO struct {
 }
 
 type loginDTO struct {
-	Email    string `binding:"required,email"`
-	Password string `binding:"required"`
+	Email    string `binding:"required,email" json:"email"`
+	Password string `binding:"required" json:"password"`
 }
 
 func Login(c *gin.Context) {
 	var dto loginDTO
 	if err := c.ShouldBindJSON(&dto); err != nil {
-		response.Send(c, http.StatusBadRequest, nil, "参数错误")
+		response.Send(c, http.StatusBadRequest, err.Error(), "参数错误")
 		return
 	}
 
@@ -38,7 +38,7 @@ func Login(c *gin.Context) {
 			response.Send(c, http.StatusBadRequest, nil, "用户不存在")
 			return
 		}
-		response.Send(c, http.StatusBadRequest, nil, "服务器错误")
+		response.Send(c, http.StatusBadRequest, err2.Error(), "服务器错误")
 		return
 	}
 
@@ -48,7 +48,7 @@ func Login(c *gin.Context) {
 	}
 	token, err := util.GenJWT(user.ID)
 	if err != nil {
-		response.Send(c, http.StatusBadRequest, nil, "Token生成错误")
+		response.Send(c, http.StatusBadRequest, err.Error(), "Token生成错误")
 		return
 	}
 	response.Send(c, http.StatusOK, token, "")
