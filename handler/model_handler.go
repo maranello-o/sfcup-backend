@@ -10,6 +10,7 @@ import (
 )
 
 func GetPredictResult(c *gin.Context) {
+	modelName := c.Param("modelName")
 	//收到文件
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -17,7 +18,7 @@ func GetPredictResult(c *gin.Context) {
 		return
 	}
 	// 创建转发请求
-	url := "http://10.22.232.237:5000/infer/nnunet"
+	url := "http://10.13.120.37:5000/infer/" + modelName
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		response.Send(c, http.StatusBadRequest, err.Error(), "")
