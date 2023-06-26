@@ -3,7 +3,6 @@ package handler
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/xid"
 	"gorm.io/gorm"
 	"net/http"
 	"sfcup/dal"
@@ -15,6 +14,7 @@ import (
 var Codes = make(map[string]string, 10)
 
 type registerDTO struct {
+	Nick     string `binding:"required" json:"nick"`
 	Email    string `binding:"required,email"`
 	Password string `binding:"required"`
 	Code     string `binding:"required,len=6"`
@@ -94,12 +94,10 @@ func RegisterUser(c *gin.Context) {
 		response.Send(c, http.StatusBadRequest, nil, "验证码错误")
 		return
 	}
-	//生成用户名
-	nickname := xid.New().String()[8:]
 
 	password := dto.Password
 
-	user := model.User{Email: email, Nickname: nickname, Password: password}
+	user := model.User{Email: email, Nickname: dto.Nick, Password: password}
 	if err2 := dal.User.Create(&user); err2 != nil {
 		response.Send(c, http.StatusBadRequest, nil, "数据库错误")
 		return
