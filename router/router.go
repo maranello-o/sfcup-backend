@@ -31,7 +31,7 @@ func EngineStart() {
 	}
 	image := engine.Group("/image")
 	{
-		image.GET("/volume", handler.GetVolume)
+		image.POST("/volume", handler.GetVolume)
 	}
 
 	if err := engine.Run("0.0.0.0:8088"); err != nil {
