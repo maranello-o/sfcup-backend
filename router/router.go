@@ -27,7 +27,7 @@ func EngineStart() {
 	}
 	model := engine.Group("/model")
 	{
-		model.POST("/prediction/:modelName", handler.GetPredictResult)
+		model.POST("/:modelName/prediction/:fileName", handler.GetPredictResult)
 	}
 	image := engine.Group("/image")
 	{
