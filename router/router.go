@@ -33,7 +33,10 @@ func EngineStart() {
 	{
 		image.POST("/volume", handler.GetVolume)
 	}
-
+	file := engine.Group("/file")
+	{
+		file.POST("", handler.UploadFile)
+	}
 	if err := engine.Run("0.0.0.0:8088"); err != nil {
 		fmt.Println(err)
 		return
