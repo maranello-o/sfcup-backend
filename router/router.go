@@ -18,7 +18,7 @@ func EngineStart() {
 	user := engine.Group("/user")
 	{
 		user.GET("/code", handler.GenVerificationCode)
-		user.POST("registry", handler.RegisterUser)
+		user.POST("/registry", handler.RegisterUser)
 		user.POST("/login", handler.Login)
 		needAuthUser := user.Use(middleware.CheckAuth)
 		{
