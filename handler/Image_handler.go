@@ -10,6 +10,16 @@ import (
 	"sfcup/response"
 )
 
+func GetTotalImage(c *gin.Context) {
+	//filepath.Walk("./file", func(path string, info fs.FileInfo, err error) error {
+	//	if err != nil {
+	//		return err
+	//	}
+	//	fmt.Println(info.Name(), info.Size())
+	//
+	//})
+}
+
 func GetVolume(c *gin.Context) {
 	fileHeader, err := c.FormFile("file")
 	if err != nil {

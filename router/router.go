@@ -31,11 +31,13 @@ func EngineStart() {
 	}
 	image := engine.Group("/image")
 	{
+		image.GET("/count")
 		image.POST("/volume", handler.GetVolume)
 	}
 	file := engine.Group("/file")
 	{
 		file.POST("", handler.UploadFile)
+		file.GET("/:fileName", handler.DownloadFile)
 	}
 	if err := engine.Run("0.0.0.0:8088"); err != nil {
 		fmt.Println(err)

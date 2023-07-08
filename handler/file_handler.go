@@ -32,7 +32,7 @@ func UploadFile(c *gin.Context) {
 	response.Send(c, http.StatusOK, fileName, "")
 }
 
-//func DownloadFile(c *gin.Context) {
-//	url := c.Param("fileUrl")
-//	c.File("file/" + url)
-//}
+func DownloadFile(c *gin.Context) {
+	url := c.Param("fileName")
+	c.File("file/" + url)
+}
