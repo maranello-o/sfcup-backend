@@ -12,7 +12,7 @@ func Cors(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", origin)
 		//主要设置Access-Control-Allow-Origin
 		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-		c.Header("Access-Control-Allow-Headers", "Cookie,tene_token,Content-Type,Content-Length, Authorization, Accept,X-Requested-With,domain,zdy")
+		c.Header("Access-Control-Allow-Headers", "Cookie,sfcup_token,Content-Type,Content-Length, Authorization, Accept,X-Requested-With,domain,zdy")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Set("content-type", "application/json")
 	}
