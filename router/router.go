@@ -27,7 +27,8 @@ func EngineStart() {
 	}
 	model := engine.Group("/model")
 	{
-		model.POST("/:modelName/prediction/:fileName", handler.GetPredictResult)
+		needAuthModel := model.Use(middleware.CheckAuth)
+		needAuthModel.POST("/:modelName/prediction/:fileName", handler.GetPredictResult)
 	}
 	image := engine.Group("/image")
 	{
@@ -38,6 +39,12 @@ func EngineStart() {
 	{
 		file.POST("", handler.UploadFile)
 		file.GET("/:fileName", handler.DownloadFile)
+	}
+	usage := engine.Group("/usage")
+	{
+		needAuthUsage := usage.Use(middleware.CheckAuth)
+		needAuthUsage.GET("", handler.GetSelfUsage)
+		usage.GET("/statistic", handler.GetTotalUsageStatistic)
 	}
 	if err := engine.Run("0.0.0.0:8088"); err != nil {
 		fmt.Println(err)

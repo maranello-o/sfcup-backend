@@ -8,10 +8,13 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"sfcup/dal"
+	"sfcup/model"
 	"sfcup/response"
 )
 
 func GetPredictResult(c *gin.Context) {
+	id := c.MustGet("id").(int64)
 	fileName := c.Param("fileName")
 	modelName := c.Param("modelName")
 	//变更：文件提前传到后端了
@@ -68,6 +71,11 @@ func GetPredictResult(c *gin.Context) {
 	err = os.WriteFile(finalFileName, body, 0644)
 	if err != nil {
 		response.Send(c, http.StatusBadRequest, nil, err.Error())
+		return
+	}
+	err = dal.Usage.Create(&model.Usage{Model: modelName, UserID: id})
+	if err != nil {
+		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
 		return
 	}
 	response.Send(c, http.StatusOK, finalFileName, "")
