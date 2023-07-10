@@ -14,6 +14,7 @@ type File struct {
 	PatientName string `gorm:"column:patient_name;type:varchar(64);not null" json:"patient_name"`
 	PatientAge  int64  `gorm:"column:patient_age;type:int;not null" json:"patient_age"`
 	CreateTime  int64  `gorm:"autoCreateTime" json:"create_time"`
+	Status      string `gorm:"column:status;type:varchar(32);not null" json:"status"`
 }
 
 // TableName File's table name

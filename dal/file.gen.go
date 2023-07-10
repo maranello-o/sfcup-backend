@@ -33,6 +33,7 @@ func newFile(db *gorm.DB, opts ...gen.DOOption) file {
 	_file.PatientName = field.NewString(tableName, "patient_name")
 	_file.PatientAge = field.NewInt64(tableName, "patient_age")
 	_file.CreateTime = field.NewInt64(tableName, "create_time")
+	_file.Status = field.NewString(tableName, "status")
 
 	_file.fillFieldMap()
 
@@ -49,6 +50,7 @@ type file struct {
 	PatientName field.String
 	PatientAge  field.Int64
 	CreateTime  field.Int64
+	Status      field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -71,6 +73,7 @@ func (f *file) updateTableName(table string) *file {
 	f.PatientName = field.NewString(table, "patient_name")
 	f.PatientAge = field.NewInt64(table, "patient_age")
 	f.CreateTime = field.NewInt64(table, "create_time")
+	f.Status = field.NewString(table, "status")
 
 	f.fillFieldMap()
 
@@ -87,13 +90,14 @@ func (f *file) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (f *file) fillFieldMap() {
-	f.fieldMap = make(map[string]field.Expr, 6)
+	f.fieldMap = make(map[string]field.Expr, 7)
 	f.fieldMap["id"] = f.ID
 	f.fieldMap["filename"] = f.Filename
 	f.fieldMap["user_id"] = f.UserID
 	f.fieldMap["patient_name"] = f.PatientName
 	f.fieldMap["patient_age"] = f.PatientAge
 	f.fieldMap["create_time"] = f.CreateTime
+	f.fieldMap["status"] = f.Status
 }
 
 func (f file) clone(db *gorm.DB) file {

@@ -10,7 +10,16 @@ import (
 	"sfcup/model"
 	"sfcup/response"
 	"strconv"
+	"time"
 )
+
+type GetSelfFilesDTO struct {
+	Filename    string `json:"filename"`
+	CreateTime  string `json:"create_time"`
+	PatientAge  int    `json:"patient_age"`
+	PatientName string `json:"patient_name"`
+	Status      string `json:"status"`
+}
 
 func UploadFile(c *gin.Context) {
 	file, err := c.FormFile("file")
@@ -45,12 +54,32 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 	//创建数据库记录
-	err = dal.File.Create(&model.File{UserID: id, Filename: fileName, PatientName: name, PatientAge: int64(age)})
+	err = dal.File.Create(&model.File{UserID: id, Filename: fileName, PatientName: name, PatientAge: int64(age), Status: "已上传"})
 	if err != nil {
 		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
 		return
 	}
 	response.Send(c, http.StatusOK, fileName, "")
+}
+
+func GetSelfFiles(c *gin.Context) {
+	var files []GetSelfFilesDTO
+	id := c.MustGet("id").(int64)
+	result, err := dal.File.Where(dal.File.UserID.Eq(id)).Find()
+	if err != nil {
+		return
+	}
+	for _, v := range result {
+		file := GetSelfFilesDTO{
+			Filename:    v.Filename,
+			CreateTime:  time.Unix(v.CreateTime, 0).Format("2006-01-02 15:04:05"),
+			PatientAge:  int(v.PatientAge),
+			PatientName: v.PatientName,
+			Status:      v.Status,
+		}
+		files = append(files, file)
+	}
+	response.Send(c, http.StatusOK, files, "")
 }
 
 func DownloadFile(c *gin.Context) {
