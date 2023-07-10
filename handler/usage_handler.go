@@ -22,7 +22,7 @@ func GetSelfUsage(c *gin.Context) {
 		return
 	}
 	for _, v := range result {
-		usage := GetSelfUsageDTO{Model: v.Model, Time: time.Unix(v.CreateAt, 0).Format("2006-01-02 15:04:05")}
+		usage := GetSelfUsageDTO{Model: v.Model, Time: time.Unix(v.CreateTime, 0).Format("2006-01-02 15:04:05")}
 		usages = append(usages, usage)
 	}
 	response.Send(c, http.StatusOK, usages, "")
@@ -40,7 +40,7 @@ func GetTotalUsageStatistic(c *gin.Context) {
 		//时间戳在今天开始到明天开始之间
 		dayBegin := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location()).Unix()
 		dayEnd := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location()).Add(time.Hour * 24).Unix()
-		count, _ := dal.Usage.Where(dal.Usage.CreateAt.Between(dayBegin, dayEnd)).Count()
+		count, _ := dal.Usage.Where(dal.Usage.CreateTime.Between(dayBegin, dayEnd)).Count()
 		formattedDate := now.Format("01-02")
 		dates = append(dates, formattedDate)
 		data = append(data, count)

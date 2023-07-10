@@ -17,12 +17,14 @@ import (
 
 var (
 	Q     = new(Query)
+	File  *file
 	Usage *usage
 	User  *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	File = &Q.File
 	Usage = &Q.Usage
 	User = &Q.User
 }
@@ -30,6 +32,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:    db,
+		File:  newFile(db, opts...),
 		Usage: newUsage(db, opts...),
 		User:  newUser(db, opts...),
 	}
@@ -38,6 +41,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	File  file
 	Usage usage
 	User  user
 }
@@ -47,6 +51,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:    db,
+		File:  q.File.clone(db),
 		Usage: q.Usage.clone(db),
 		User:  q.User.clone(db),
 	}
@@ -63,18 +68,21 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:    db,
+		File:  q.File.replaceDB(db),
 		Usage: q.Usage.replaceDB(db),
 		User:  q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
+	File  IFileDo
 	Usage IUsageDo
 	User  IUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		File:  q.File.WithContext(ctx),
 		Usage: q.Usage.WithContext(ctx),
 		User:  q.User.WithContext(ctx),
 	}

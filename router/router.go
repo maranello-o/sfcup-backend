@@ -37,7 +37,8 @@ func EngineStart() {
 	}
 	file := engine.Group("/file")
 	{
-		file.POST("", handler.UploadFile)
+		needAuthFile := file.Use(middleware.CheckAuth)
+		needAuthFile.POST("", handler.UploadFile)
 		file.GET("/:fileName", handler.DownloadFile)
 	}
 	usage := engine.Group("/usage")
