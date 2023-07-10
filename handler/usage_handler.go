@@ -9,8 +9,8 @@ import (
 )
 
 type GetSelfUsageDTO struct {
-	Model string
-	Time  string
+	Model string `json:"model"`
+	Time  string `json:"time"`
 }
 
 func GetSelfUsage(c *gin.Context) {
