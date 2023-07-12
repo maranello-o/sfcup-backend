@@ -25,7 +25,7 @@ func GetPredictResult(c *gin.Context) {
 	//	return
 	//}
 	// 创建转发请求
-	url := "http://10.22.232.237:5000/infer/" + modelName
+	url := "http://10.13.120.32:5000/infer/" + modelName
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		response.Send(c, http.StatusBadRequest, nil, err.Error())

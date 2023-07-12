@@ -37,10 +37,10 @@ func EngineStart() {
 	}
 	file := engine.Group("/file")
 	{
+		file.GET("/:fileName", handler.DownloadFile)
 		needAuthFile := file.Use(middleware.CheckAuth)
 		needAuthFile.POST("", handler.UploadFile)
 		needAuthFile.GET("", handler.GetSelfFiles)
-		file.GET("/:fileName", handler.DownloadFile)
 	}
 	usage := engine.Group("/usage")
 	{

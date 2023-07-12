@@ -10,6 +10,7 @@ import (
 	"sfcup/model"
 	"sfcup/response"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -53,7 +54,13 @@ func UploadFile(c *gin.Context) {
 		response.Send(c, http.StatusBadRequest, nil, "文件保存错误")
 		return
 	}
-	//创建数据库记录
+	//如果是非NIFTI格式的文件，则需要保存将转换后的结果
+	index := strings.Index(fileName, ".")
+	suffix := fileName[index+1:]
+	if suffix != "nii" && suffix != "nii.gz" {
+		//转换
+	}
+	//创建本次上传文件的数据库记录
 	err = dal.File.Create(&model.File{UserID: id, Filename: fileName, PatientName: name, PatientAge: int64(age), Status: "已上传"})
 	if err != nil {
 		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
