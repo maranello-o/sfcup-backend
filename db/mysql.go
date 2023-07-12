@@ -24,7 +24,9 @@ func InitGorm() {
 		},
 	)
 	// 连接数据库
+	//d, err := gorm.Open(mysql.Open("root:943155756@tcp(localhost:3306)/sfcup?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{Logger: newLogger})
 	d, err := gorm.Open(mysql.Open("root:TY0sOdBJcCm7L56T8ryV@tcp(containers-us-west-60.railway.app:7727)/sfcup?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{Logger: newLogger})
+
 	if err != nil {
 		panic(fmt.Errorf("cannot establish MDB connection: %w", err))
 	}

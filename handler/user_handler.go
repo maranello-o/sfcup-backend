@@ -13,6 +13,7 @@ type getSelfProfileDTO struct {
 	Email      string `json:"email"`
 	Password   string `json:"password"`
 	Nick       string `json:"nick"`
+	Avatar     string `json:"avatar"`
 	CreateTime string `json:"create_time"`
 }
 
@@ -25,6 +26,6 @@ func GetSelfProfile(c *gin.Context) {
 		return
 	}
 	createTime := time.Unix(user.CreateTime, 0).Format("2006-01-02")
-	dto := getSelfProfileDTO{ID: id, Email: user.Email, Password: user.Password, Nick: user.Nickname, CreateTime: createTime}
+	dto := getSelfProfileDTO{ID: id, Email: user.Email, Password: user.Password, Avatar: user.Avatar, Nick: user.Nickname, CreateTime: createTime}
 	response.Send(c, http.StatusOK, dto, "")
 }

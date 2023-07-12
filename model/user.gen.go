@@ -13,6 +13,7 @@ type User struct {
 	Password   string `gorm:"column:password;type:varchar(64);not null" json:"password"`
 	Nickname   string `gorm:"column:nickname;type:varchar(32);not null" json:"nickname"`
 	CreateTime int64  `gorm:"autoCreateTime" json:"create_time"`
+	Avatar     string `gorm:"column:avatar;type:varchar(128);not null" json:"avatar"`
 }
 
 // TableName User's table name

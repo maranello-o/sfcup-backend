@@ -97,7 +97,7 @@ func RegisterUser(c *gin.Context) {
 
 	password := dto.Password
 
-	user := model.User{Email: email, Nickname: dto.Nick, Password: password}
+	user := model.User{Email: email, Nickname: dto.Nick, Avatar: "https://sfcup-backend-production.up.railway.app/file/defaultAvatar.png", Password: password}
 	if err2 := dal.User.Create(&user); err2 != nil {
 		response.Send(c, http.StatusBadRequest, nil, "数据库错误")
 		return
