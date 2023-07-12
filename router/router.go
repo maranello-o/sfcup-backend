@@ -24,6 +24,7 @@ func EngineStart() {
 		{
 			needAuthUser.GET("/profile", handler.GetSelfProfile)
 			needAuthUser.PUT("/avatar", handler.ChangeAvatar)
+			needAuthUser.PUT("/profile", handler.ChangeProfile)
 		}
 	}
 	model := engine.Group("/model")

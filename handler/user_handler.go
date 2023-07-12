@@ -20,6 +20,11 @@ type getSelfProfileDTO struct {
 	CreateTime string `json:"create_time"`
 }
 
+type changeProfileDTO struct {
+	Nick     string `json:"nick"`
+	Password string `json:"password"`
+}
+
 func GetSelfProfile(c *gin.Context) {
 	id := c.MustGet("id").(int64)
 	//必定有一个，因为已登录的用户才能请求
@@ -54,5 +59,17 @@ func ChangeAvatar(c *gin.Context) {
 		return
 	}
 	dal.User.Where(dal.User.ID.Eq(id)).Update(dal.User.Avatar, "https://sfcup-backend-production.up.railway.app/file/"+fileName)
+	response.Send(c, http.StatusOK, nil, "")
+}
+
+func ChangeProfile(c *gin.Context) {
+	var dto changeProfileDTO
+	id := c.MustGet("id").(int64)
+	err := c.ShouldBindJSON(&dto)
+	if err != nil {
+		response.Send(c, http.StatusBadRequest, err.Error(), "服务器错误，请稍后重试")
+		return
+	}
+	dal.User.Where(dal.User.ID.Eq(id)).Updates(map[string]any{"nickname": dto.Nick, "password": dto.Password})
 	response.Send(c, http.StatusOK, nil, "")
 }
