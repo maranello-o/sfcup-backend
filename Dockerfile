@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY ./sfcup .
 
-# COPY ./static/* ./static/
+COPY ./file/* ./file/
 
 RUN apk --update add tzdata && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
