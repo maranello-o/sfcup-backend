@@ -23,6 +23,7 @@ func EngineStart() {
 		needAuthUser := user.Use(middleware.CheckAuth)
 		{
 			needAuthUser.GET("/profile", handler.GetSelfProfile)
+			needAuthUser.PUT("/avatar", handler.ChangeAvatar)
 		}
 	}
 	model := engine.Group("/model")
