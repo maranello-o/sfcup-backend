@@ -17,6 +17,10 @@ func GetPredictResult(c *gin.Context) {
 	id := c.MustGet("id").(int64)
 	fileName := c.Param("fileName")
 	modelName := c.Param("modelName")
+	dal.Usage.Create(&model.Usage{
+		UserID: id,
+		Model:  modelName,
+	})
 	//变更：文件提前传到后端了
 	//收到文件
 	//file, err := c.FormFile("file")
@@ -78,6 +82,8 @@ func GetPredictResult(c *gin.Context) {
 		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
 		return
 	}
+	//修改文件状态为已分割
+	dal.File.Where(dal.File.Filename.Eq(fileName)).Update(dal.File.Status, "已分割")
 	response.Send(c, http.StatusOK, finalFileName, "")
 	//c.Data(resp.StatusCode, resp.Header.Get("Content-Type"), body)
 }

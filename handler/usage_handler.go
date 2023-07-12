@@ -16,7 +16,7 @@ type GetSelfUsageDTO struct {
 func GetSelfUsage(c *gin.Context) {
 	var usages []GetSelfUsageDTO
 	id := c.MustGet("id").(int64)
-	result, err := dal.Usage.Where(dal.Usage.UserID.Eq(id)).Find()
+	result, err := dal.Usage.Where(dal.Usage.UserID.Eq(id)).Order(dal.Usage.CreateTime.Desc()).Find()
 	if err != nil {
 		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
 		return
@@ -26,6 +26,20 @@ func GetSelfUsage(c *gin.Context) {
 		usages = append(usages, usage)
 	}
 	response.Send(c, http.StatusOK, usages, "")
+}
+
+func GetModelUsageProportion(c *gin.Context) {
+	var data []struct {
+		Name  string `json:"name"`
+		Value int    `json:"value"`
+	}
+	err := dal.Usage.Select(dal.Usage.ID.Count().As("value"), dal.Usage.Model.As("name")).Group(dal.Usage.Model).Scan(&data)
+	if err != nil {
+		response.Send(c, http.StatusOK, nil, err.Error())
+		return
+	}
+
+	response.Send(c, http.StatusOK, data, "")
 }
 
 func GetTotalUsageStatistic(c *gin.Context) {

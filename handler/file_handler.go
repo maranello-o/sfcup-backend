@@ -61,7 +61,7 @@ func UploadFile(c *gin.Context) {
 		//转换
 	}
 	//创建本次上传文件的数据库记录
-	err = dal.File.Create(&model.File{UserID: id, Filename: fileName, PatientName: name, PatientAge: int64(age), Status: "已上传"})
+	err = dal.File.Create(&model.File{UserID: id, Filename: fileName, PatientName: name, PatientAge: int64(age), Status: "待分割"})
 	if err != nil {
 		response.Send(c, http.StatusInternalServerError, nil, "服务器错误")
 		return
@@ -72,7 +72,7 @@ func UploadFile(c *gin.Context) {
 func GetSelfFiles(c *gin.Context) {
 	var files []GetSelfFilesDTO
 	id := c.MustGet("id").(int64)
-	result, err := dal.File.Where(dal.File.UserID.Eq(id)).Find()
+	result, err := dal.File.Where(dal.File.UserID.Eq(id)).Order(dal.File.CreateTime.Desc()).Find()
 	if err != nil {
 		return
 	}

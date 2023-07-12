@@ -44,6 +44,7 @@ func EngineStart() {
 	}
 	usage := engine.Group("/usage")
 	{
+		usage.GET("/proportion", handler.GetModelUsageProportion)
 		needAuthUsage := usage.Use(middleware.CheckAuth)
 		needAuthUsage.GET("", handler.GetSelfUsage)
 		usage.GET("/statistic", handler.GetTotalUsageStatistic)
